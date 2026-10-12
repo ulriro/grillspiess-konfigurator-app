@@ -71,6 +71,7 @@ section p{margin:0;max-width:66ch}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .themebtn .i-sun{display:block}:root:not([data-theme="light"]) .themebtn .i-moon{display:none}}
 .cartpill{font-family:var(--mono);font-size:12px;border:1px solid var(--line);border-radius:99px;padding:4px 10px;background:var(--bg);cursor:pointer;color:var(--ink)}
 .view{flex:1;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column}
+.view>*{flex-shrink:0}
 .tabs{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);background:var(--surface)}
 .tabs button{all:unset;cursor:pointer;text-align:center;padding:10px 4px 14px;font-size:12px;font-weight:600;color:var(--muted);display:grid;gap:3px;justify-items:center}
 .tabs button svg{width:22px;height:22px}
@@ -123,7 +124,7 @@ section p{margin:0;max-width:66ch}
 .card .mm{font-size:10px;color:var(--muted);font-family:var(--mono)}
 .card.nofit{opacity:.45}
 
-.pricebar{margin-top:auto;background:var(--surface);border-top:1px solid var(--line);padding:10px 14px 12px;display:grid;gap:8px}
+.pricebar{margin-top:auto;position:sticky;bottom:0;z-index:2;background:var(--surface);border-top:1px solid var(--line);padding:10px 14px 12px;display:grid;gap:8px}
 .pricerow{display:flex;justify-content:space-between;align-items:flex-end;gap:10px}
 .total{font-family:var(--display);font-weight:900;font-size:40px;line-height:.9}
 .total small{font-family:var(--mono);font-size:13px;font-weight:600;margin-right:4px}
