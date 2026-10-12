@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex">
+<script>try{var t=localStorage.getItem("ms-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 <title>Mein Spiess – App-Prototyp | Sonne-Metzg</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -52,7 +53,7 @@ section p{margin:0;max-width:66ch}
 @media (max-width:900px){.grid{grid-template-columns:minmax(0,1fr);gap:40px}.sticky{position:static}}
 
 /* ---------- phone ---------- */
-.phone{width:100%;max-width:392px;margin:0 auto;border-radius:44px;padding:10px;background:#0E0F0E;box-shadow:0 30px 60px -30px rgba(0,0,0,.45)}
+.phone{width:100%;max-width:392px;margin:0 auto;border-radius:44px;padding:10px;background:#0E0F0E;box-shadow:0 0 0 1px var(--line),0 30px 60px -30px rgba(0,0,0,.45)}
 .screen{border-radius:34px;overflow:hidden;background:var(--bg);height:780px;display:flex;flex-direction:column;position:relative}
 @media (max-width:440px){.phone{padding:0;background:none;box-shadow:none;border-radius:0}.screen{border-radius:18px;border:1px solid var(--line);height:760px}}
 .appbar{display:flex;align-items:center;justify-content:space-between;padding:16px 18px 10px;background:var(--surface);border-bottom:1px solid var(--line)}
@@ -60,6 +61,14 @@ section p{margin:0;max-width:66ch}
 .sunmark{width:30px;height:30px;flex:none}
 .brand b{font-family:var(--display);font-size:24px;font-weight:900;text-transform:uppercase;letter-spacing:.02em;line-height:1}
 .brand small{display:block;font-size:11px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.appbar-actions{display:flex;align-items:center;gap:8px}
+.themebtn{width:32px;height:32px;display:grid;place-items:center;border:1px solid var(--line);border-radius:99px;background:var(--bg);color:var(--ink);cursor:pointer;padding:0}
+.themebtn svg{width:17px;height:17px}
+.themebtn:focus-visible,.cartpill:focus-visible{outline:2px solid var(--sun);outline-offset:2px}
+.themebtn .i-sun{display:none}
+:root[data-theme="dark"] .themebtn .i-sun{display:block}
+:root[data-theme="dark"] .themebtn .i-moon{display:none}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .themebtn .i-sun{display:block}:root:not([data-theme="light"]) .themebtn .i-moon{display:none}}
 .cartpill{font-family:var(--mono);font-size:12px;border:1px solid var(--line);border-radius:99px;padding:4px 10px;background:var(--bg);cursor:pointer;color:var(--ink)}
 .view{flex:1;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column}
 .tabs{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);background:var(--surface)}
@@ -227,7 +236,10 @@ body{display:grid;place-items:center;padding-block:28px;padding-inline:16px;-web
               <svg class="sunmark" viewBox="0 0 40 40" aria-hidden="true"><g fill="var(--sun)"><circle cx="20" cy="20" r="9"/><g id="ray"><path d="M20 1l2.6 8h-5.2z"/></g><use href="#ray" transform="rotate(45 20 20)"/><use href="#ray" transform="rotate(90 20 20)"/><use href="#ray" transform="rotate(135 20 20)"/><use href="#ray" transform="rotate(180 20 20)"/><use href="#ray" transform="rotate(225 20 20)"/><use href="#ray" transform="rotate(270 20 20)"/><use href="#ray" transform="rotate(315 20 20)"/></g><circle cx="20" cy="20" r="5.5" fill="var(--red)"/></svg>
               <div><b>Mein Spiess</b><small>Sonne-Metzg · Reiden</small></div>
             </div>
-            <button class="cartpill num" id="cartPill" type="button">Korb 0</button>
+            <div class="appbar-actions">
+              <button class="themebtn" id="themeBtn" type="button" aria-label="Helles oder dunkles Design"><svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg><svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+              <button class="cartpill num" id="cartPill" type="button">Korb 0</button>
+            </div>
           </div>
 
           <div class="view" id="v-build"></div>
@@ -660,6 +672,14 @@ function show(v){
 }
 document.querySelector(".tabs").addEventListener("click", e => { const b = e.target.closest("[data-v]"); if (b) show(b.dataset.v); });
 $("#cartPill").onclick = () => show("cart");
+$("#themeBtn").onclick = () => {
+  const root = document.documentElement, cur = root.getAttribute("data-theme")
+    || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  const next = cur === "dark" ? "light" : "dark";
+  root.setAttribute("data-theme", next);
+  try { localStorage.setItem("ms-theme", next); } catch(_){}
+  toast(next === "dark" ? "Dunkles Design" : "Helles Design");
+};
 
 renderMars(); renderCats(); renderPriceTable(); renderTpl();
 show("build");
