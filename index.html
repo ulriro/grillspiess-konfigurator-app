@@ -198,15 +198,18 @@ img{max-width:100%}
 html,body{margin:0;min-height:100%}
 
 body{display:grid;place-items:center;padding-block:28px;padding-inline:16px;-webkit-text-size-adjust:100%}
-.demo{display:grid;gap:14px;justify-items:center;width:100%;max-width:420px}
+.demo{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;justify-items:center;width:100%;max-width:420px}
+.demo>*{min-width:0;max-width:100%}
+.phone,.screen{min-width:0}
 .demo-head{text-align:center;display:grid;gap:4px}
 .demo-head h1{font-size:44px}
 .hint{max-width:36ch}
 @media (max-width:500px){
   body{padding:0;display:block}
-  .demo{max-width:none;gap:0}
+  html,body{overflow-x:hidden}
+  .demo{display:block;max-width:none;gap:0}
   .demo-head,.hint{display:none}
-  .phone{padding:0;background:none;box-shadow:none;border-radius:0;max-width:none}
+  .phone{width:100%;padding:0;background:none;box-shadow:none;border-radius:0;max-width:none}
   .screen{border-radius:0;border:0;height:100vh;height:100dvh;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 }
 </style>
